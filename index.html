@@ -226,27 +226,27 @@
     </main>
 
     <!-- Detalhes de um jogador (aparece por cima da página) -->
-    <div id="modal-detalhes" class="modal">
+    <div id="modal-detalhes" class="modal" hidden>
         <article class="detalhe" role="dialog" aria-modal="true" aria-labelledby="detalhe-nome">
-            <a href="#lista" class="modal__fechar" aria-label="Fechar detalhes">&times;</a>
-            <img class="detalhe__imagem" src="https://a.espncdn.com/i/teamlogos/soccer/500/86.png" alt="Escudo do Real Madrid">
+            <button type="button" class="modal__fechar" id="btn-fechar-modal" aria-label="Fechar detalhes">&times;</button>
+            <img id="detalhe-imagem" class="detalhe__imagem" src="assets/img/sem-escudo.svg" alt="">
             <div class="detalhe__info">
-                <h2 id="detalhe-nome">Vinícius Júnior</h2>
-                <p class="detalhe__sub">Atacante · Real Madrid</p>
+                <h2 id="detalhe-nome">Nome</h2>
+                <p id="detalhe-sub" class="detalhe__sub"></p>
                 <dl class="detalhe__dados">
-                    <dt>No meu time</dt><dd>Titular</dd>
-                    <dt>Clube</dt><dd>Real Madrid</dd>
-                    <dt>Posição</dt><dd>Atacante</dd>
-                    <dt>Camisa</dt><dd>7</dd>
-                    <dt>Idade</dt><dd>26</dd>
-                    <dt>Nacionalidade</dt><dd>Brasil</dd>
-                    <dt>Minha nota</dt><dd>★ 9.5 / 10</dd>
+                    <dt>No meu time</dt><dd id="detalhe-situacao"></dd>
+                    <dt>Clube</dt><dd id="detalhe-clube"></dd>
+                    <dt>Posição</dt><dd id="detalhe-posicao"></dd>
+                    <dt>Camisa</dt><dd id="detalhe-camisa"></dd>
+                    <dt>Idade</dt><dd id="detalhe-idade"></dd>
+                    <dt>Nacionalidade</dt><dd id="detalhe-nacionalidade"></dd>
+                    <dt>Minha nota</dt><dd id="detalhe-nota"></dd>
                 </dl>
                 <h3>Observação</h3>
-                <p>Velocidade e drible pela esquerda.</p>
+                <p id="detalhe-observacao"></p>
                 <div class="detalhe__acoes">
-                    <button type="button" class="botao botao--primario">Editar</button>
-                    <button type="button" class="botao botao--perigo">Excluir</button>
+                    <button type="button" class="botao botao--primario" id="detalhe-editar">Editar</button>
+                    <button type="button" class="botao botao--perigo" id="detalhe-excluir">Excluir</button>
                 </div>
             </div>
         </article>
