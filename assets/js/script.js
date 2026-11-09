@@ -61,6 +61,9 @@ const textoFormacao = document.querySelector("#formacao");
 const escalacaoVazia = document.querySelector("#escalacao-vazia");
 const campoFutebol = document.querySelector(".campo-futebol");
 
+const seletorFormacao = document.querySelector("#formacao-desejada");
+const statusFormacao = document.querySelector("#formacao-status");
+
 const MAXIMO_TITULARES = 11;
 
 const POSICOES = ["Goleiro", "Defensor", "Meio-campista", "Atacante"];
@@ -71,6 +74,17 @@ const LINHAS_CAMPO = {
     "Defensor": "#linha-defensor",
     "Meio-campista": "#linha-meio-campista",
     "Atacante": "#linha-atacante"
+};
+
+const CHAVE_FORMACAO = "timedossonhos:formacao";
+
+// Quantos titulares de cada posição cada formação precisa
+const FORMACOES = {
+    "4-3-3": { "Goleiro": 1, "Defensor": 4, "Meio-campista": 3, "Atacante": 3 },
+    "4-4-2": { "Goleiro": 1, "Defensor": 4, "Meio-campista": 4, "Atacante": 2 },
+    "3-5-2": { "Goleiro": 1, "Defensor": 3, "Meio-campista": 5, "Atacante": 2 },
+    "5-3-2": { "Goleiro": 1, "Defensor": 5, "Meio-campista": 3, "Atacante": 2 },
+    "4-5-1": { "Goleiro": 1, "Defensor": 4, "Meio-campista": 5, "Atacante": 1 }
 };
 const IMAGEM_PADRAO = "assets/img/sem-escudo.svg";
 
@@ -531,6 +545,50 @@ function renderizarEscalacao() {
     }
 
     escalacaoVazia.hidden = titulares.length > 0;
+
+    verificarFormacao(titulares);
+}
+
+// Compara os titulares com a formação escolhida e mostra o que falta ou sobra
+function verificarFormacao(titulares) {
+
+    const formacao = FORMACOES[seletorFormacao.value];
+
+    const faltam = [];
+    const sobram = [];
+
+    POSICOES.forEach(posicao => {
+
+        const atual = contarPorPosicao(titulares, posicao);
+        const esperado = formacao[posicao];
+
+        if (atual < esperado) {
+            faltam.push(`${posicao} (${esperado - atual})`);
+        }
+
+        if (atual > esperado) {
+            sobram.push(`${posicao} (${atual - esperado})`);
+        }
+    });
+
+    if (faltam.length === 0 && sobram.length === 0) {
+        statusFormacao.textContent = `Escalação completa no ${seletorFormacao.value}!`;
+        statusFormacao.className = "formacao-status formacao-status--ok";
+        return;
+    }
+
+    let texto = "";
+
+    if (faltam.length > 0) {
+        texto = `Faltam: ${juntarComPonto(faltam)}.`;
+    }
+
+    if (sobram.length > 0) {
+        texto = `${texto} Sobram: ${juntarComPonto(sobram)}.`;
+    }
+
+    statusFormacao.textContent = texto.trim();
+    statusFormacao.className = "formacao-status formacao-status--alerta";
 }
 
 /* =====================================================
@@ -1297,6 +1355,18 @@ botaoLimparFiltros.addEventListener("click", () => {
     seletorOrdenacao.value = "recentes";
 
     renderizarJogadores();
+});
+
+// Recupera a formação escolhida da última vez
+const formacaoSalva = localStorage.getItem(CHAVE_FORMACAO);
+
+if (formacaoSalva && FORMACOES[formacaoSalva]) {
+    seletorFormacao.value = formacaoSalva;
+}
+
+seletorFormacao.addEventListener("change", () => {
+    localStorage.setItem(CHAVE_FORMACAO, seletorFormacao.value);
+    renderizarEscalacao();
 });
 
 // 1ª requisição: ao escolher a liga, carrega os times
