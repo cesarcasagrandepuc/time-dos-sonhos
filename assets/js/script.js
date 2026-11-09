@@ -11,6 +11,9 @@ let jogadores = carregarJogadores();
 // Estado temporário: id do jogador que está sendo editado
 let idEmEdicao = null;
 
+// Estado temporário: id do jogador aberto nos detalhes
+let idEmDetalhe = null;
+
 // ---------- Elementos da página ----------
 
 const formulario = document.querySelector("#form-jogador");
@@ -32,6 +35,8 @@ const mensagem = document.querySelector("#mensagem");
 const listaJogadores = document.querySelector("#lista-jogadores");
 const listaVazia = document.querySelector("#lista-vazia");
 const contador = document.querySelector("#contador");
+
+const modalDetalhes = document.querySelector("#modal-detalhes");
 
 const MAXIMO_TITULARES = 11;
 const IMAGEM_PADRAO = "assets/img/sem-escudo.svg";
@@ -325,6 +330,7 @@ function criarCard(jogador) {
     corpo.append(etiqueta, nome, subtitulo, informacoes, nota);
 
     const acoes = criarElemento("div", "card__acoes");
+    acoes.append(criarBotao("Detalhes", "botao--primario", "detalhes", jogador.id));
     acoes.append(criarBotao("Editar", "botao--secundario", "editar", jogador.id));
     acoes.append(criarBotao("Excluir", "botao--perigo", "excluir", jogador.id));
     corpo.append(acoes);

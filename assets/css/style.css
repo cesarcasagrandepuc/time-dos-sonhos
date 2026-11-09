@@ -533,16 +533,16 @@ textarea::placeholder {
     position: fixed;
     inset: 0;
     z-index: 30;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     background-color: rgba(0, 0, 0, 0.75);
 }
 
-/* Sem JavaScript: o modal aparece quando o link aponta para ele (#modal-detalhes) */
-.modal:target {
-    display: flex;
+/* o display: flex acima anularia o atributo hidden */
+.modal[hidden] {
+    display: none;
 }
 
 .detalhe {
