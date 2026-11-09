@@ -23,12 +23,22 @@ API pública da ESPN, para buscar os elencos reais das principais ligas e adicio
 - área de detalhes do jogador
 - área prevista para a busca de elencos reais (API)
 
+## Etapa 2 — CSS, layout e responsividade
+
+- identidade visual com variáveis CSS (cores, raios, sombras e tipografia)
+- layout principal com CSS Grid e componentes com Flexbox
+- listagem em cards organizada com Grid (`auto-fill` + `minmax`)
+- formulário, botões, etiquetas de situação e mensagens estilizados
+- detalhes do jogador em uma janela sobreposta (abre com `:target`, só com CSS)
+- estados de interação: `hover`, `focus-visible` e `active`
+- responsividade com Media Queries (breakpoints em 960px e 600px)
+
 ## Estrutura
 
 ```
 index.html
 assets/
-├── css/
+├── css/style.css
 ├── js/script.js
 └── img/
 ```
