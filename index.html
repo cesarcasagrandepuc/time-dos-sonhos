@@ -23,6 +23,7 @@
                     <li><a href="#buscar-api">Elencos reais</a></li>
                     <li><a href="#escalacao">Escalação</a></li>
                     <li><a href="#lista">Meu time</a></li>
+                    <li><a href="#comparar">Comparar</a></li>
                 </ul>
             </nav>
         </div>
@@ -314,6 +315,41 @@
                 </ul>
 
                 <p id="lista-vazia" class="lista-vazia" hidden>Nenhum jogador encontrado.</p>
+            </section>
+
+            <section id="comparar" class="painel" aria-labelledby="titulo-comparar">
+                <h2 id="titulo-comparar">Comparar jogadores</h2>
+
+                <form id="form-comparar" class="comparar-seletores">
+                    <div class="campo">
+                        <label for="comparar-a">Jogador 1</label>
+                        <select id="comparar-a" name="compararA"></select>
+                    </div>
+
+                    <span class="comparar-vs" aria-hidden="true">x</span>
+
+                    <div class="campo">
+                        <label for="comparar-b">Jogador 2</label>
+                        <select id="comparar-b" name="compararB"></select>
+                    </div>
+                </form>
+
+                <div class="tabela-rolagem">
+                    <table id="tabela-comparar" class="tabela tabela--comparar" hidden>
+                        <thead>
+                            <tr>
+                                <th scope="col">Atributo</th>
+                                <th scope="col" id="comparar-nome-a"></th>
+                                <th scope="col" id="comparar-nome-b"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-comparar">
+                            <!-- Linhas geradas pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <p id="comparar-aviso" class="painel__descricao">Escolha dois jogadores do seu time.</p>
             </section>
         </div>
     </main>
