@@ -340,6 +340,79 @@ textarea::placeholder {
     color: var(--cor-erro);
 }
 
+/* ---------- Busca na API ---------- */
+.busca-api {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.status-api {
+    margin: 0.75rem 0 0;
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+}
+
+.status-api:empty {
+    display: none;
+}
+
+.resultados-api {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.resultado {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    background-color: var(--cor-superficie-2);
+    border: 1px solid transparent;
+    border-radius: var(--raio-pequeno);
+}
+
+.resultado:hover {
+    border-color: var(--cor-primaria);
+}
+
+.resultado__bandeira {
+    width: 36px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 0.2rem;
+    flex-shrink: 0;
+}
+
+.resultado__aviso {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+.resultado__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.resultado__titulo {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.resultado__sub {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
+}
+
 /* ---------- Listagem ---------- */
 .lista__topo {
     display: flex;
@@ -453,6 +526,98 @@ textarea::placeholder {
     color: var(--cor-texto-suave);
     border: 2px dashed var(--cor-borda);
     border-radius: var(--raio);
+}
+
+/* ---------- Modal de detalhes ---------- */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Sem JavaScript: o modal aparece quando o link aponta para ele (#modal-detalhes) */
+.modal:target {
+    display: flex;
+}
+
+.detalhe {
+    position: relative;
+    width: min(760px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem;
+}
+
+.detalhe__imagem {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 1.5rem;
+    object-fit: contain;
+    background-color: #173a27;
+    border-radius: var(--raio-pequeno);
+}
+
+.detalhe__sub {
+    margin: 0 0 1rem;
+    color: var(--cor-texto-suave);
+}
+
+.detalhe__dados {
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1rem;
+    font-size: 0.9rem;
+}
+
+.detalhe__dados dt {
+    font-weight: 700;
+    color: var(--cor-texto-suave);
+}
+
+.detalhe__dados dd {
+    margin: 0;
+}
+
+.detalhe__acoes {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.6rem;
+}
+
+.modal__fechar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--cor-texto);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.modal__fechar:hover {
+    background-color: var(--cor-superficie-2);
 }
 
 /* ---------- Rodapé ---------- */
