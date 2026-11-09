@@ -4,7 +4,9 @@
 
 // ---------- Estado da aplicação ----------
 
-let jogadores = [];
+const CHAVE_STORAGE = "timedossonhos:jogadores";
+
+let jogadores = carregarJogadores();
 
 // ---------- Elementos da página ----------
 
@@ -188,8 +190,94 @@ function mostrarMensagem(texto, tipo) {
     mensagem.hidden = false;
 }
 
+/* =====================================================
+   Persistência com localStorage
+   ===================================================== */
+
+function salvarJogadores() {
+
+    const dados = JSON.stringify(jogadores);
+
+    localStorage.setItem(CHAVE_STORAGE, dados);
+}
+
+function carregarJogadores() {
+
+    const dados = localStorage.getItem(CHAVE_STORAGE);
+
+    // Primeiro acesso: começa com alguns exemplos
+    if (!dados) {
+        return criarJogadoresIniciais();
+    }
+
+    try {
+
+        const jogadoresSalvos = JSON.parse(dados);
+
+        if (!Array.isArray(jogadoresSalvos)) {
+            return [];
+        }
+
+        return jogadoresSalvos;
+
+    } catch (erro) {
+
+        console.error("Não foi possível ler os dados salvos:", erro);
+
+        return [];
+    }
+}
+
+function criarJogadoresIniciais() {
+    return [
+        {
+            id: 1,
+            nome: "Alisson",
+            clube: "Liverpool",
+                        posicao: "Goleiro",
+            situacao: "Titular",
+            camisa: 1,
+            idade: null,
+            nacionalidade: "Brasil",
+            nota: 9,
+            imagem: "https://a.espncdn.com/i/teamlogos/soccer/500/364.png",
+            observacao: "Seguro no gol e ótimo com os pés.",
+            idApi: ""
+        },
+        {
+            id: 2,
+            nome: "Vinícius Júnior",
+            clube: "Real Madrid",
+                        posicao: "Atacante",
+            situacao: "Titular",
+            camisa: 7,
+            idade: null,
+            nacionalidade: "Brasil",
+            nota: 9.5,
+            imagem: "https://a.espncdn.com/i/teamlogos/soccer/500/86.png",
+            observacao: "Velocidade e drible pela esquerda.",
+            idApi: ""
+        },
+        {
+            id: 3,
+            nome: "Erling Haaland",
+            clube: "Manchester City",
+                        posicao: "Atacante",
+            situacao: "Reserva",
+            camisa: 9,
+            idade: null,
+            nacionalidade: "Noruega",
+            nota: 9,
+            imagem: "https://a.espncdn.com/i/teamlogos/soccer/500/382.png",
+            observacao: "",
+            idApi: ""
+        }
+    ];
+}
+
 // Sempre que os dados mudarem: salva e renderiza novamente
 function atualizarAplicacao() {
+    salvarJogadores();
     renderizarJogadores();
 }
 
