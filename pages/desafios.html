@@ -40,6 +40,12 @@
                         <span class="modo__titulo">Escolha às cegas</span>
                         <span class="modo__descricao">Um jogador aparece e o outro fica escondido. Você tem poucos segundos pra ficar com o que está vendo ou arriscar no escondido.</span>
                     </label>
+
+                    <label class="modo">
+                        <input type="radio" name="modo" value="leilao">
+                        <span class="modo__titulo">Leilão</span>
+                        <span class="modo__descricao">Cada pessoa tem um orçamento. Os jogadores vão a leilão aberto e quem der o maior lance leva.</span>
+                    </label>
                 </fieldset>
 
                 <div class="campo-grupo">
@@ -98,6 +104,12 @@
                             <option value="7">7 segundos</option>
                             <option value="10">10 segundos</option>
                         </select>
+                    </div>
+
+                    <div class="campo" id="campo-orcamento" hidden>
+                        <label for="orcamento">Orçamento (R$ milhões)</label>
+                        <input type="number" id="orcamento" min="10" max="1000" value="100">
+                        <small class="campo__erro" id="erro-orcamento"></small>
                     </div>
                 </div>
 

@@ -45,6 +45,8 @@ const seletorTime = document.querySelector("#time-desafio");
 const seletorFormato = document.querySelector("#formato");
 const seletorTempo = document.querySelector("#tempo");
 const campoTempo = document.querySelector("#campo-tempo");
+const campoOrcamento = document.querySelector("#orcamento");
+const blocoOrcamento = document.querySelector("#campo-orcamento");
 const statusDesafio = document.querySelector("#status-desafio");
 const botaoComecar = document.querySelector("#btn-comecar");
 
@@ -231,6 +233,10 @@ function renderizarPlacar() {
 
         let info = `${time.length} de ${jogo.vagas.length} jogadores`;
 
+        if (jogo.modo === "leilao") {
+            info = `${info} · saldo R$ ${jogo.saldos[pessoa]} mi`;
+        }
+
         document.querySelector(`#placar-info-${numero}`).textContent = info;
 
         const lista = document.querySelector(`#placar-lista-${numero}`);
@@ -239,6 +245,10 @@ function renderizarPlacar() {
         time.forEach(atleta => {
 
             let texto = `${atleta.nome} (${atleta.posicao})`;
+
+            if (atleta.preco !== undefined) {
+                texto = `${texto} · R$ ${atleta.preco} mi`;
+            }
 
             lista.append(criarElemento("li", "", texto));
         });
@@ -440,6 +450,161 @@ function pularCegas() {
 }
 
 /* =====================================================
+   Modo 2: Leilão aberto
+   ===================================================== */
+
+const LANCE_MINIMO = 1;
+
+function vagasRestantes(pessoa) {
+    return jogo.vagas.length - jogo.times[pessoa].length;
+}
+
+// Guarda R$ 1 mi para cada vaga que ainda falta preencher depois desta
+function lanceMaximo(pessoa) {
+    return jogo.saldos[pessoa] - (vagasRestantes(pessoa) - 1) * LANCE_MINIMO;
+}
+
+function podeDarLance(pessoa, valor) {
+
+    if (vagasRestantes(pessoa) === 0) {
+        return false;
+    }
+
+    // Quem já está ganhando o lote não cobre o próprio lance
+    if (jogo.lider === pessoa) {
+        return false;
+    }
+
+    return valor <= lanceMaximo(pessoa);
+}
+
+function proximoLance(incremento) {
+
+    // O primeiro lance de um jogador começa no lance mínimo
+    if (jogo.lider === null) {
+        return LANCE_MINIMO + incremento - 1;
+    }
+
+    return jogo.lance + incremento;
+}
+
+function leilaoTerminou() {
+
+    const timesCompletos = vagasRestantes(0) === 0 && vagasRestantes(1) === 0;
+
+    return timesCompletos || jogo.banco.length === 0;
+}
+
+function iniciarLote() {
+
+    if (leilaoTerminou()) {
+        finalizarDesafio();
+        return;
+    }
+
+    jogo.lote = sortearDoBanco("");
+    jogo.lance = 0;
+    jogo.lider = null;
+
+    renderizarLote();
+}
+
+function renderizarLote() {
+
+    tituloJogo.textContent = "Leilão";
+
+    areaJogo.textContent = "";
+
+    const carta = criarCartaAtleta(jogo.lote, false);
+    carta.classList.add("carta--leilao");
+
+    let textoLance = `Lance mínimo: R$ ${LANCE_MINIMO} mi. Ninguém deu lance ainda.`;
+
+    if (jogo.lider !== null) {
+        textoLance = `Maior lance: R$ ${jogo.lance} mi, de ${jogo.nomes[jogo.lider]}.`;
+    }
+
+    const lance = criarElemento("p", "lance-atual", textoLance);
+
+    const colunas = criarElemento("div", "lances");
+
+    [0, 1].forEach(pessoa => {
+
+        const coluna = criarElemento("div", "lances__pessoa");
+
+        coluna.append(
+            criarElemento("strong", "", jogo.nomes[pessoa]),
+            criarElemento("span", "carta__sub", `Saldo: R$ ${jogo.saldos[pessoa]} mi · faltam ${vagasRestantes(pessoa)}`)
+        );
+
+        const botoes = criarElemento("div", "lances__botoes");
+
+        [1, 5, 10].forEach(incremento => {
+
+            const valor = proximoLance(incremento);
+
+            const botao = criarBotao(`R$ ${valor} mi`, "botao--secundario botao--pequeno", "lance");
+            botao.dataset.pessoa = pessoa;
+            botao.dataset.incremento = incremento;
+            botao.disabled = !podeDarLance(pessoa, valor);
+
+            botoes.append(botao);
+        });
+
+        coluna.append(botoes);
+        colunas.append(coluna);
+    });
+
+    const acoes = criarElemento("div", "formulario__acoes");
+
+    const vendido = criarBotao("Vendido!", "botao--primario", "vendido");
+    vendido.disabled = jogo.lider === null;
+
+    acoes.append(vendido, criarBotao("Pular jogador", "botao--perigo", "pular-leilao"));
+
+    areaJogo.append(carta, lance, colunas, acoes);
+}
+
+function darLance(pessoa, incremento) {
+
+    const valor = proximoLance(incremento);
+
+    if (!podeDarLance(pessoa, valor)) {
+        return;
+    }
+
+    jogo.lance = valor;
+    jogo.lider = pessoa;
+
+    renderizarLote();
+}
+
+function venderLote() {
+
+    if (jogo.lider === null) {
+        return;
+    }
+
+    const pessoa = jogo.lider;
+
+    jogo.lote.preco = jogo.lance;
+    jogo.times[pessoa].push(jogo.lote);
+    jogo.saldos[pessoa] = jogo.saldos[pessoa] - jogo.lance;
+
+    registrarHistorico(`${jogo.nomes[pessoa]} comprou ${jogo.lote.nome} por R$ ${jogo.lance} mi.`);
+
+    renderizarPlacar();
+    iniciarLote();
+}
+
+function pularLote() {
+
+    registrarHistorico(`${jogo.lote.nome} ficou sem comprador.`);
+
+    iniciarLote();
+}
+
+/* =====================================================
    Início e fim do desafio
    ===================================================== */
 
@@ -452,6 +617,12 @@ function finalizarDesafio() {
     areaJogo.textContent = "";
 
     let resumo = "Os dois times estão abaixo. Qual ficou melhor?";
+
+    if (jogo.modo === "leilao") {
+        const gasto1 = jogo.orcamento - jogo.saldos[0];
+        const gasto2 = jogo.orcamento - jogo.saldos[1];
+        resumo = `${jogo.nomes[0]} gastou R$ ${gasto1} mi e ${jogo.nomes[1]} gastou R$ ${gasto2} mi. Qual time ficou melhor?`;
+    }
 
     const acoes = criarElemento("div", "formulario__acoes");
 
@@ -488,6 +659,13 @@ function validarConfiguracao() {
 
     if (seletorLiga.value === "") {
         document.querySelector("#erro-liga-desafio").textContent = "Escolha a liga.";
+        valido = false;
+    }
+
+    const orcamento = Number(campoOrcamento.value);
+
+    if (modoEscolhido() === "leilao" && (orcamento < 10 || orcamento > 1000)) {
+        document.querySelector("#erro-orcamento").textContent = "Use um valor entre 10 e 1000.";
         valido = false;
     }
 
@@ -539,6 +717,15 @@ async function comecarDesafio() {
     listaHistorico.textContent = "";
     secaoJogo.hidden = false;
 
+    if (jogo.modo === "leilao") {
+        jogo.orcamento = Number(campoOrcamento.value);
+        jogo.saldos = [jogo.orcamento, jogo.orcamento];
+        renderizarPlacar();
+        iniciarLote();
+        secaoJogo.scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+
     renderizarPlacar();
     iniciarRodadaCegas();
     secaoJogo.scrollIntoView({ behavior: "smooth" });
@@ -586,6 +773,7 @@ seletorLiga.addEventListener("change", async () => {
 formDesafio.addEventListener("change", () => {
     const modo = modoEscolhido();
     campoTempo.hidden = modo !== "cegas";
+    blocoOrcamento.hidden = modo !== "leilao";
 });
 
 formDesafio.addEventListener("submit", event => {
@@ -610,6 +798,18 @@ areaJogo.addEventListener("click", event => {
 
     if (acao === "pular-cegas") {
         pularCegas();
+    }
+
+    if (acao === "lance") {
+        darLance(Number(botao.dataset.pessoa), Number(botao.dataset.incremento));
+    }
+
+    if (acao === "vendido") {
+        venderLote();
+    }
+
+    if (acao === "pular-leilao") {
+        pularLote();
     }
 
     if (acao === "votar") {

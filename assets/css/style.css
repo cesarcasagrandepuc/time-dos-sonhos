@@ -660,6 +660,39 @@ textarea:focus-visible {
     color: var(--cor-texto-suave);
 }
 
+/* ---------- Leilão ---------- */
+.carta--leilao {
+    min-height: 110px;
+}
+
+.lance-atual {
+    margin: 0;
+    text-align: center;
+    font-weight: 800;
+    color: var(--cor-destaque);
+}
+
+.lances {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.lances__pessoa {
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background-color: var(--cor-superficie-2);
+    border-radius: var(--raio-pequeno);
+}
+
+.lances__botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
 /* ---------- Formulários ---------- */
 .formulario {
     display: flex;
@@ -1193,6 +1226,10 @@ textarea::placeholder {
 
     .cartas__ou {
         text-align: center;
+    }
+
+    .lances {
+        grid-template-columns: 1fr;
     }
 
     .filtro-elenco {
