@@ -38,6 +38,12 @@ const contador = document.querySelector("#contador");
 
 const modalDetalhes = document.querySelector("#modal-detalhes");
 
+const campoPesquisa = document.querySelector("#pesquisa");
+const filtroPosicao = document.querySelector("#filtro-posicao");
+const filtroSituacao = document.querySelector("#filtro-situacao");
+const seletorOrdenacao = document.querySelector("#ordenacao");
+const botaoLimparFiltros = document.querySelector("#btn-limpar-filtros");
+
 const MAXIMO_TITULARES = 11;
 const IMAGEM_PADRAO = "assets/img/sem-escudo.svg";
 
@@ -304,8 +310,58 @@ function atualizarAplicacao() {
    Listagem
    ===================================================== */
 
+// Jogadores sem nota ou sem idade ficam por último na ordenação
+function numeroOuPadrao(valor, padrao) {
+
+    if (valor === null) {
+        return padrao;
+    }
+
+    return valor;
+}
+
+function compararJogadores(a, b, ordenacao) {
+
+    switch (ordenacao) {
+        case "nome-az":
+            return a.nome.localeCompare(b.nome);
+        case "nome-za":
+            return b.nome.localeCompare(a.nome);
+        case "nota":
+            return numeroOuPadrao(b.nota, -1) - numeroOuPadrao(a.nota, -1);
+        case "mais-novo":
+            return numeroOuPadrao(a.idade, 999) - numeroOuPadrao(b.idade, 999);
+        case "mais-velho":
+            return numeroOuPadrao(b.idade, -1) - numeroOuPadrao(a.idade, -1);
+        default:
+            // "recentes": o maior id é o cadastrado por último
+            return b.id - a.id;
+    }
+}
+
+// Aplica pesquisa, filtros e ordenação sem alterar o array original
 function obterJogadoresVisiveis() {
-    return jogadores;
+
+    const termo = campoPesquisa.value.trim().toLowerCase();
+    const posicao = filtroPosicao.value;
+    const situacao = filtroSituacao.value;
+    const ordenacao = seletorOrdenacao.value;
+
+    const filtrados = jogadores.filter(jogador => {
+
+        const atendePesquisa =
+            termo === "" ||
+            jogador.nome.toLowerCase().includes(termo) ||
+            jogador.clube.toLowerCase().includes(termo);
+
+        const atendePosicao = posicao === "" || jogador.posicao === posicao;
+
+        const atendeSituacao = situacao === "" || jogador.situacao === situacao;
+
+        return atendePesquisa && atendePosicao && atendeSituacao;
+    });
+
+    return filtrados.sort((a, b) => compararJogadores(a, b, ordenacao));
 }
 
 function criarCard(jogador) {
