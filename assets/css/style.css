@@ -175,6 +175,119 @@ textarea:focus-visible {
     font-size: 0.9rem;
 }
 
+/* ---------- Escalação e estatísticas (Grid) ---------- */
+.resumo-time {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ---------- Campo de futebol ---------- */
+.campo-futebol {
+    position: relative;
+    min-height: 440px;
+    margin-top: 1rem;
+    padding: 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--raio-pequeno);
+    /* faixas do gramado */
+    background-color: #1f7a45;
+    background-image: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05) 0 40px,
+        transparent 40px 80px
+    );
+    overflow: hidden;
+}
+
+/* linha do meio-campo */
+.campo-futebol::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* círculo central */
+.campo-futebol::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90px;
+    height: 90px;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+}
+
+.campo-futebol__linha {
+    position: relative;
+    z-index: 1;
+    min-height: 70px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.jogador-campo {
+    width: 84px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem;
+    font: inherit;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-radius: var(--raio-pequeno);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.jogador-campo:hover {
+    transform: scale(1.08);
+}
+
+.jogador-campo__numero {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--cor-texto-botao);
+    background-color: #fff;
+    border: 3px solid var(--cor-destaque);
+    border-radius: 50%;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+
+.jogador-campo--goleiro .jogador-campo__numero {
+    background-color: var(--cor-destaque);
+    border-color: #fff;
+}
+
+.jogador-campo__nome {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
 /* ---------- Formulários ---------- */
 .formulario {
     display: flex;
@@ -638,6 +751,13 @@ textarea::placeholder {
    Responsividade (Media Queries)
    ========================================================== */
 
+/* Telas médias: escalação e estatísticas uma embaixo da outra */
+@media (max-width: 1200px) {
+    .resumo-time {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Tablets e notebooks pequenos */
 @media (max-width: 960px) {
     .layout {
@@ -685,6 +805,20 @@ textarea::placeholder {
     .filtros,
     .busca-api {
         grid-template-columns: 1fr;
+    }
+
+    .campo-futebol {
+        min-height: 380px;
+    }
+
+    .jogador-campo {
+        width: 64px;
+    }
+
+    .jogador-campo__numero {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 
     .cards {
