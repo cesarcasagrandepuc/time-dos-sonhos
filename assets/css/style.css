@@ -432,6 +432,40 @@ textarea:focus-visible {
     font-weight: 700;
 }
 
+/* ---------- Próximos jogos ---------- */
+.proximos-jogos {
+    margin-top: 0.75rem;
+}
+
+.lista-jogos {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.jogo {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-superficie-2);
+    border-left: 3px solid var(--cor-destaque);
+    border-radius: var(--raio-pequeno);
+    font-size: 0.85rem;
+}
+
+.jogo__data {
+    font-size: 0.75rem;
+    color: var(--cor-texto-suave);
+    text-transform: capitalize;
+}
+
+.jogo__times {
+    font-weight: 700;
+}
+
 /* ---------- Formulários ---------- */
 .formulario {
     display: flex;
