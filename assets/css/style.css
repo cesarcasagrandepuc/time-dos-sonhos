@@ -466,6 +466,32 @@ textarea:focus-visible {
     font-weight: 700;
 }
 
+/* ---------- Comparar jogadores ---------- */
+.comparar-seletores {
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.75rem;
+    align-items: end;
+}
+
+.comparar-vs {
+    padding-bottom: 0.6rem;
+    font-weight: 800;
+    color: var(--cor-destaque);
+}
+
+.tabela--comparar th:first-child,
+.tabela--comparar td:first-child {
+    text-align: left;
+    color: var(--cor-texto-suave);
+}
+
+.comparar__melhor {
+    color: var(--cor-sucesso);
+    font-weight: 800;
+}
+
 /* ---------- Formulários ---------- */
 .formulario {
     display: flex;

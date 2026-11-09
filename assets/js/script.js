@@ -70,6 +70,12 @@ const corpoClassificacao = document.querySelector("#tabela-classificacao");
 const blocoProximosJogos = document.querySelector("#proximos-jogos");
 const listaJogos = document.querySelector("#lista-jogos");
 
+const seletorCompararA = document.querySelector("#comparar-a");
+const seletorCompararB = document.querySelector("#comparar-b");
+const tabelaComparar = document.querySelector("#tabela-comparar");
+const corpoComparar = document.querySelector("#corpo-comparar");
+const avisoComparar = document.querySelector("#comparar-aviso");
+
 const MAXIMO_TITULARES = 11;
 
 const POSICOES = ["Goleiro", "Defensor", "Meio-campista", "Atacante"];
@@ -488,6 +494,9 @@ function renderizarJogadores() {
     if (timesApi.length > 0) {
         renderizarClassificacao();
     }
+
+    preencherSeletoresComparar();
+    renderizarComparacao();
 }
 
 /* =====================================================
@@ -978,6 +987,113 @@ function fecharDetalhes() {
     modalDetalhes.hidden = true;
 
     idEmDetalhe = null;
+}
+
+/* =====================================================
+   Comparar jogadores
+   ===================================================== */
+
+function preencherSeletor(seletor) {
+
+    // Guarda a escolha atual para não perder ao recriar as opções
+    const escolhido = seletor.value;
+
+    seletor.textContent = "";
+
+    const opcaoInicial = criarElemento("option", "", "Selecione");
+    opcaoInicial.value = "";
+    seletor.append(opcaoInicial);
+
+    const emOrdemAlfabetica = jogadores
+        .map(jogador => jogador)
+        .sort((a, b) => a.nome.localeCompare(b.nome));
+
+    emOrdemAlfabetica.forEach(jogador => {
+
+        const opcao = criarElemento("option", "", jogador.nome);
+        opcao.value = jogador.id;
+
+        seletor.append(opcao);
+    });
+
+    // Se o jogador escolhido ainda existe, mantém selecionado
+    if (buscarJogador(Number(escolhido))) {
+        seletor.value = escolhido;
+    }
+}
+
+function preencherSeletoresComparar() {
+    preencherSeletor(seletorCompararA);
+    preencherSeletor(seletorCompararB);
+}
+
+function criarLinhaComparacao(rotulo, valorA, valorB) {
+
+    const linha = criarElemento("tr");
+
+    linha.append(
+        criarElemento("td", "", rotulo),
+        criarElemento("td", "", valorOuTraco(valorA)),
+        criarElemento("td", "", valorOuTraco(valorB))
+    );
+
+    return linha;
+}
+
+function renderizarComparacao() {
+
+    const jogadorA = buscarJogador(Number(seletorCompararA.value));
+    const jogadorB = buscarJogador(Number(seletorCompararB.value));
+
+    if (!jogadorA || !jogadorB) {
+        tabelaComparar.hidden = true;
+        avisoComparar.textContent = "Escolha dois jogadores do seu time.";
+        avisoComparar.hidden = false;
+        return;
+    }
+
+    if (jogadorA.id === jogadorB.id) {
+        tabelaComparar.hidden = true;
+        avisoComparar.textContent = "Escolha dois jogadores diferentes.";
+        avisoComparar.hidden = false;
+        return;
+    }
+
+    document.querySelector("#comparar-nome-a").textContent = jogadorA.nome;
+    document.querySelector("#comparar-nome-b").textContent = jogadorB.nome;
+
+    corpoComparar.textContent = "";
+
+    corpoComparar.append(
+        criarLinhaComparacao("Clube", jogadorA.clube, jogadorB.clube),
+        criarLinhaComparacao("Posição", jogadorA.posicao, jogadorB.posicao),
+        criarLinhaComparacao("No meu time", jogadorA.situacao, jogadorB.situacao),
+        criarLinhaComparacao("Camisa", jogadorA.camisa, jogadorB.camisa),
+        criarLinhaComparacao("Idade", jogadorA.idade, jogadorB.idade),
+        criarLinhaComparacao("Nacionalidade", jogadorA.nacionalidade, jogadorB.nacionalidade)
+    );
+
+    // Na nota, destaca quem é melhor
+    const linhaNota = criarLinhaComparacao(
+        "Minha nota",
+        formatarNota(jogadorA.nota),
+        formatarNota(jogadorB.nota)
+    );
+
+    const notaA = numeroOuPadrao(jogadorA.nota, -1);
+    const notaB = numeroOuPadrao(jogadorB.nota, -1);
+    const celulas = linhaNota.querySelectorAll("td");
+
+    if (notaA > notaB) {
+        celulas[1].classList.add("comparar__melhor");
+    } else if (notaB > notaA) {
+        celulas[2].classList.add("comparar__melhor");
+    }
+
+    corpoComparar.append(linhaNota);
+
+    tabelaComparar.hidden = false;
+    avisoComparar.hidden = true;
 }
 
 /* =====================================================
@@ -1541,6 +1657,9 @@ seletorFormacao.addEventListener("change", () => {
     localStorage.setItem(CHAVE_FORMACAO, seletorFormacao.value);
     renderizarEscalacao();
 });
+
+seletorCompararA.addEventListener("change", renderizarComparacao);
+seletorCompararB.addEventListener("change", renderizarComparacao);
 
 // 1ª requisição: ao escolher a liga, carrega os times
 seletorLiga.addEventListener("change", async () => {
