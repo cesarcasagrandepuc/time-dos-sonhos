@@ -14,6 +14,12 @@ let idEmEdicao = null;
 // Estado temporário: id do jogador aberto nos detalhes
 let idEmDetalhe = null;
 
+// Estado temporário da busca na API
+let timesApi = [];
+let elencoApi = [];
+let timeSelecionado = null;
+let idApiSelecionado = "";
+
 // ---------- Elementos da página ----------
 
 const formulario = document.querySelector("#form-jogador");
@@ -43,6 +49,11 @@ const filtroPosicao = document.querySelector("#filtro-posicao");
 const filtroSituacao = document.querySelector("#filtro-situacao");
 const seletorOrdenacao = document.querySelector("#ordenacao");
 const botaoLimparFiltros = document.querySelector("#btn-limpar-filtros");
+
+const seletorLiga = document.querySelector("#liga");
+const seletorTime = document.querySelector("#time-api");
+const statusApi = document.querySelector("#status-api");
+const listaResultadosApi = document.querySelector("#resultados-api");
 
 const MAXIMO_TITULARES = 11;
 const IMAGEM_PADRAO = "assets/img/sem-escudo.svg";
