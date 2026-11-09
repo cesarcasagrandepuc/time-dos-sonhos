@@ -121,6 +121,105 @@
 
         <!-- Coluna principal: escalação, estatísticas e listagem -->
         <div class="layout__principal">
+            <section id="lista" class="painel painel--lista" aria-labelledby="titulo-lista">
+                <div class="lista__topo">
+                    <h2 id="titulo-lista">Meu time</h2>
+                    <p id="contador" class="contador">3 jogadores · 2/11 titulares</p>
+                </div>
+
+                <form id="form-filtros" class="filtros" role="search" aria-label="Pesquisar, filtrar e ordenar jogadores">
+                    <div class="campo campo--pesquisa">
+                        <label for="pesquisa">Pesquisar por nome ou clube</label>
+                        <input type="search" id="pesquisa" name="pesquisa" placeholder="Digite o nome ou o clube...">
+                    </div>
+
+                    <div class="campo">
+                        <label for="filtro-posicao">Posição</label>
+                        <select id="filtro-posicao" name="filtroPosicao">
+                            <option value="">Todas</option>
+                            <option value="Goleiro">Goleiro</option>
+                            <option value="Defensor">Defensor</option>
+                            <option value="Meio-campista">Meio-campista</option>
+                            <option value="Atacante">Atacante</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="filtro-situacao">No meu time</label>
+                        <select id="filtro-situacao" name="filtroSituacao">
+                            <option value="">Todos</option>
+                            <option value="Titular">Titular</option>
+                            <option value="Reserva">Reserva</option>
+                            <option value="Observando">Observando</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="ordenacao">Ordenar por</label>
+                        <select id="ordenacao" name="ordenacao">
+                            <option value="recentes">Cadastrados recentemente</option>
+                            <option value="nome-az">Nome (A–Z)</option>
+                            <option value="nome-za">Nome (Z–A)</option>
+                            <option value="nota">Maior nota</option>
+                            <option value="mais-novo">Mais novo</option>
+                            <option value="mais-velho">Mais velho</option>
+                        </select>
+                    </div>
+
+                    <button type="button" id="btn-limpar-filtros" class="botao botao--secundario">Limpar</button>
+                </form>
+
+                <ul id="lista-jogadores" class="cards">
+                    <!-- Dados de exemplo: na Etapa 3 serão gerados pelo JavaScript -->
+                    <li class="card">
+                        <img class="card__imagem" src="https://a.espncdn.com/i/teamlogos/soccer/500/364.png" alt="Escudo do Liverpool">
+                        <div class="card__corpo">
+                            <span class="etiqueta etiqueta--titular">Titular</span>
+                            <h3 class="card__nome">Alisson</h3>
+                            <p class="card__sub">Goleiro · Liverpool</p>
+                            <p class="card__sub">Camisa 1 · Brasil</p>
+                            <p class="card__nota">★ 9 / 10</p>
+                            <div class="card__acoes">
+                                <a href="#modal-detalhes" class="botao botao--pequeno botao--primario">Detalhes</a>
+                                <button type="button" class="botao botao--pequeno botao--secundario">Editar</button>
+                                <button type="button" class="botao botao--pequeno botao--perigo">Excluir</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card">
+                        <img class="card__imagem" src="https://a.espncdn.com/i/teamlogos/soccer/500/86.png" alt="Escudo do Real Madrid">
+                        <div class="card__corpo">
+                            <span class="etiqueta etiqueta--titular">Titular</span>
+                            <h3 class="card__nome">Vinícius Júnior</h3>
+                            <p class="card__sub">Atacante · Real Madrid</p>
+                            <p class="card__sub">Camisa 7 · 26 anos · Brasil</p>
+                            <p class="card__nota">★ 9.5 / 10</p>
+                            <div class="card__acoes">
+                                <a href="#modal-detalhes" class="botao botao--pequeno botao--primario">Detalhes</a>
+                                <button type="button" class="botao botao--pequeno botao--secundario">Editar</button>
+                                <button type="button" class="botao botao--pequeno botao--perigo">Excluir</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card">
+                        <img class="card__imagem" src="https://a.espncdn.com/i/teamlogos/soccer/500/382.png" alt="Escudo do Manchester City">
+                        <div class="card__corpo">
+                            <span class="etiqueta etiqueta--reserva">Reserva</span>
+                            <h3 class="card__nome">Erling Haaland</h3>
+                            <p class="card__sub">Atacante · Manchester City</p>
+                            <p class="card__sub">Camisa 9 · Noruega</p>
+                            <p class="card__nota">★ 9 / 10</p>
+                            <div class="card__acoes">
+                                <a href="#modal-detalhes" class="botao botao--pequeno botao--primario">Detalhes</a>
+                                <button type="button" class="botao botao--pequeno botao--secundario">Editar</button>
+                                <button type="button" class="botao botao--pequeno botao--perigo">Excluir</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <p id="lista-vazia" class="lista-vazia" hidden>Nenhum jogador encontrado.</p>
+            </section>
         </div>
     </main>
 
