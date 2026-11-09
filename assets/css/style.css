@@ -175,6 +175,171 @@ textarea:focus-visible {
     font-size: 0.9rem;
 }
 
+/* ---------- Formulários ---------- */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+}
+
+.campo-grupo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-pequeno);
+    transition: border-color 0.2s;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: var(--cor-primaria);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #8a8a8a;
+}
+
+/* Campo com erro de validação (classe adicionada pelo JS) */
+.campo--invalido input,
+.campo--invalido select {
+    border-color: var(--cor-erro);
+}
+
+.campo__erro {
+    min-height: 1em;
+    font-size: 0.8rem;
+    color: var(--cor-erro);
+}
+
+.campo__erro:empty {
+    min-height: 0;
+}
+
+.formulario__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+/* ---------- Botões ---------- */
+.botao {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.6rem 1.1rem;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    border-radius: var(--raio-pequeno);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.botao:active {
+    transform: translateY(1px);
+}
+
+.botao:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.botao--primario {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-botao);
+}
+
+.botao--primario:hover {
+    background-color: var(--cor-primaria-hover);
+}
+
+.botao--secundario {
+    background-color: transparent;
+    color: var(--cor-texto);
+    border-color: var(--cor-borda);
+}
+
+.botao--secundario:hover {
+    background-color: var(--cor-superficie-2);
+}
+
+.botao--perigo {
+    background-color: transparent;
+    color: var(--cor-erro);
+    border-color: var(--cor-erro);
+}
+
+.botao--perigo:hover {
+    background-color: var(--cor-erro);
+    color: var(--cor-texto-botao);
+}
+
+.botao--pequeno {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+}
+
+/* ---------- Mensagens de feedback ---------- */
+.mensagem {
+    cursor: pointer;
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 20;
+    max-width: min(420px, calc(100vw - 2rem));
+    margin: 0;
+    padding: 0.8rem 1rem;
+    box-shadow: var(--sombra);
+    background-color: var(--cor-superficie);
+    border-radius: var(--raio-pequeno);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.mensagem--sucesso {
+    background-image: linear-gradient(rgba(61, 220, 151, 0.15), rgba(61, 220, 151, 0.15));
+    border: 1px solid var(--cor-sucesso);
+    color: var(--cor-sucesso);
+}
+
+.mensagem--erro {
+    background-image: linear-gradient(rgba(255, 107, 129, 0.15), rgba(255, 107, 129, 0.15));
+    border: 1px solid var(--cor-erro);
+    color: var(--cor-erro);
+}
+
 /* ---------- Rodapé ---------- */
 .rodape {
     padding: 1.25rem;
