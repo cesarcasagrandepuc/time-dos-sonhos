@@ -168,6 +168,35 @@
 
                     <p id="escalacao-vazia" class="painel__descricao" hidden>Nenhum titular ainda. Cadastre jogadores como "Titular" para eles aparecerem no campo.</p>
                 </section>
+
+                <section id="estatisticas" class="painel" aria-labelledby="titulo-estatisticas">
+                    <h2 id="titulo-estatisticas">Estatísticas do time</h2>
+
+                    <ul class="numeros">
+                        <li class="numero">
+                            <span class="numero__valor" id="estat-total">0</span>
+                            <span class="numero__rotulo">jogadores</span>
+                        </li>
+                        <li class="numero">
+                            <span class="numero__valor" id="estat-titulares">0</span>
+                            <span class="numero__rotulo">titulares</span>
+                        </li>
+                        <li class="numero">
+                            <span class="numero__valor" id="estat-nota">—</span>
+                            <span class="numero__rotulo">nota média</span>
+                        </li>
+                        <li class="numero">
+                            <span class="numero__valor" id="estat-idade">—</span>
+                            <span class="numero__rotulo">idade média</span>
+                        </li>
+                    </ul>
+
+                    <h3>Por posição</h3>
+                    <ul class="barras" id="estat-posicoes"></ul>
+
+                    <h3>Nacionalidades</h3>
+                    <ul class="barras" id="estat-paises"></ul>
+                </section>
             </div>
 
             <section id="lista" class="painel painel--lista" aria-labelledby="titulo-lista">

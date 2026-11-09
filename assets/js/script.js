@@ -459,6 +459,8 @@ function renderizarJogadores() {
     atualizarContador(visiveis.length);
 
     renderizarEscalacao();
+
+    renderizarEstatisticas();
 }
 
 /* =====================================================
@@ -527,6 +529,111 @@ function renderizarEscalacao() {
     }
 
     escalacaoVazia.hidden = titulares.length > 0;
+}
+
+/* =====================================================
+   Estatísticas do time
+   ===================================================== */
+
+// Média de um campo numérico (nota ou idade), ignorando valores vazios
+function calcularMedia(campo) {
+
+    let soma = 0;
+    let quantidade = 0;
+
+    jogadores.forEach(jogador => {
+
+        if (jogador[campo] !== null) {
+            soma = soma + jogador[campo];
+            quantidade++;
+        }
+    });
+
+    if (quantidade === 0) {
+        return null;
+    }
+
+    // Arredonda para uma casa decimal
+    return Math.round((soma / quantidade) * 10) / 10;
+}
+
+function contarNacionalidades() {
+
+    const contagem = [];
+
+    jogadores.forEach(jogador => {
+
+        let pais = jogador.nacionalidade;
+
+        if (pais === "") {
+            pais = "Não informada";
+        }
+
+        const existente = contagem.find(item => item.pais === pais);
+
+        if (existente) {
+            existente.quantidade++;
+        } else {
+            contagem.push({ pais, quantidade: 1 });
+        }
+    });
+
+    return contagem.sort((a, b) => b.quantidade - a.quantidade);
+}
+
+function criarBarra(rotulo, valor, maximo) {
+
+    const item = criarElemento("li", "barra");
+
+    const trilho = criarElemento("span", "barra__trilho");
+    const preenchimento = criarElemento("span", "barra__preenchimento");
+
+    let porcentagem = 0;
+
+    if (maximo > 0) {
+        porcentagem = (valor / maximo) * 100;
+    }
+
+    preenchimento.style.width = `${porcentagem}%`;
+
+    trilho.append(preenchimento);
+
+    item.append(
+        criarElemento("span", "barra__rotulo", rotulo),
+        trilho,
+        criarElemento("span", "barra__valor", valor)
+    );
+
+    return item;
+}
+
+function renderizarEstatisticas() {
+
+    const notaMedia = calcularMedia("nota");
+    const idadeMedia = calcularMedia("idade");
+
+    document.querySelector("#estat-total").textContent = jogadores.length;
+    document.querySelector("#estat-titulares").textContent = `${contarTitulares()}/${MAXIMO_TITULARES}`;
+    document.querySelector("#estat-nota").textContent = valorOuTraco(notaMedia);
+    document.querySelector("#estat-idade").textContent = valorOuTraco(idadeMedia);
+
+    const listaPosicoes = document.querySelector("#estat-posicoes");
+    listaPosicoes.textContent = "";
+
+    POSICOES.forEach(posicao => {
+        const quantidade = contarPorPosicao(jogadores, posicao);
+        listaPosicoes.append(criarBarra(posicao, quantidade, jogadores.length));
+    });
+
+    const listaPaises = document.querySelector("#estat-paises");
+    listaPaises.textContent = "";
+
+    // Mostra só as 5 nacionalidades com mais jogadores
+    contarNacionalidades().forEach((item, indice) => {
+        if (indice < 5) {
+            listaPaises.append(criarBarra(item.pais, item.quantidade, jogadores.length));
+        }
+    });
 }
 
 /* =====================================================
