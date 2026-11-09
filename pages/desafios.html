@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Desafios do Meu Time dos Sonhos: escolha às cegas e leilão de jogadores para duas pessoas.">
+    <title>Desafios | Meu Time dos Sonhos</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/desafios.js" defer></script>
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="cabecalho__conteudo">
+            <h1 class="titulo-sistema">
+                <a href="../index.html" class="logo">
+                    <img src="../assets/img/logo.svg" alt="" width="36" height="36">
+                    <span>Meu Time dos Sonhos</span>
+                </a>
+            </h1>
+            <nav aria-label="Navegação principal">
+                <ul class="menu">
+                    <li><a href="../index.html">Meu time</a></li>
+                    <li><a href="#configuracao">Novo desafio</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="layout layout--desafios">
+        <section id="configuracao" class="painel" aria-labelledby="titulo-configuracao">
+            <h2 id="titulo-configuracao">Desafios para 2 pessoas</h2>
+            <p class="painel__descricao">Monte um time contra um amigo usando jogadores reais (dados da ESPN). Escolha o modo, de onde vêm os jogadores e o tamanho do time.</p>
+
+            <form id="form-desafio" class="formulario" novalidate>
+                <fieldset class="modos">
+                    <legend>Modo de jogo</legend>
+
+                    <label class="modo">
+                        <input type="radio" name="modo" value="cegas" checked>
+                        <span class="modo__titulo">Escolha às cegas</span>
+                        <span class="modo__descricao">Um jogador aparece e o outro fica escondido. Você tem poucos segundos pra ficar com o que está vendo ou arriscar no escondido.</span>
+                    </label>
+                </fieldset>
+
+                <div class="campo-grupo">
+                    <div class="campo">
+                        <label for="pessoa-1">Pessoa 1 *</label>
+                        <input type="text" id="pessoa-1" maxlength="20" value="Pessoa 1" required>
+                        <small class="campo__erro" id="erro-pessoa-1"></small>
+                    </div>
+
+                    <div class="campo">
+                        <label for="pessoa-2">Pessoa 2 *</label>
+                        <input type="text" id="pessoa-2" maxlength="20" value="Pessoa 2" required>
+                        <small class="campo__erro" id="erro-pessoa-2"></small>
+                    </div>
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo">
+                        <label for="liga-desafio">Liga *</label>
+                        <select id="liga-desafio" required>
+                            <option value="">Selecione a liga</option>
+                            <option value="bra.1">Brasileirão Série A</option>
+                            <option value="eng.1">Premier League (Inglaterra)</option>
+                            <option value="esp.1">La Liga (Espanha)</option>
+                            <option value="ita.1">Serie A (Itália)</option>
+                            <option value="ger.1">Bundesliga (Alemanha)</option>
+                            <option value="fra.1">Ligue 1 (França)</option>
+                        </select>
+                        <small class="campo__erro" id="erro-liga-desafio"></small>
+                    </div>
+
+                    <div class="campo">
+                        <label for="time-desafio">Jogadores de</label>
+                        <select id="time-desafio">
+                            <option value="">Vários times da liga (sorteados)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo">
+                        <label for="formato">Tamanho do time</label>
+                        <select id="formato">
+                            <option value="5x5">5 x 5</option>
+                            <option value="11x11">11 x 11</option>
+                        </select>
+                    </div>
+
+                    <div class="campo" id="campo-tempo">
+                        <label for="tempo">Tempo por escolha</label>
+                        <select id="tempo">
+                            <option value="1">1 segundo</option>
+                            <option value="2">2 segundos</option>
+                            <option value="2.5">2,5 segundos</option>
+                            <option value="5" selected>5 segundos</option>
+                            <option value="7">7 segundos</option>
+                            <option value="10">10 segundos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="formulario__acoes">
+                    <button type="submit" id="btn-comecar" class="botao botao--primario">Começar desafio</button>
+                </div>
+            </form>
+
+            <p id="status-desafio" class="status-api" aria-live="polite"></p>
+        </section>
+
+        <section id="jogo" class="painel" aria-labelledby="titulo-jogo" hidden>
+            <h2 id="titulo-jogo">Desafio</h2>
+
+            <!-- A área do jogo é montada pelo JavaScript a cada rodada -->
+            <div id="area-jogo" class="area-jogo"></div>
+        </section>
+
+        <section id="placar" class="placar" aria-label="Times montados" hidden>
+            <article class="painel time-desafio">
+                <h3 id="placar-nome-1">Pessoa 1</h3>
+                <p class="painel__descricao" id="placar-info-1"></p>
+                <ol class="time-desafio__lista" id="placar-lista-1"></ol>
+            </article>
+
+            <article class="painel time-desafio">
+                <h3 id="placar-nome-2">Pessoa 2</h3>
+                <p class="painel__descricao" id="placar-info-2"></p>
+                <ol class="time-desafio__lista" id="placar-lista-2"></ol>
+            </article>
+        </section>
+
+        <section class="painel" aria-labelledby="titulo-historico" id="secao-historico" hidden>
+            <h2 id="titulo-historico">O que aconteceu</h2>
+            <ol id="historico" class="historico"></ol>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>Meu Time dos Sonhos &middot; Trabalho Prático de DIW &middot; PUC Minas &middot; César Casagrande Lopes</p>
+        <p>Jogadores reais obtidos da API pública da ESPN.</p>
+    </footer>
+</body>
+</html>
