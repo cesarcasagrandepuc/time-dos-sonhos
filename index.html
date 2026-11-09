@@ -30,6 +30,92 @@
     <main class="layout">
         <!-- Coluna lateral: cadastro e busca na API -->
         <div class="layout__lateral">
+            <section id="cadastro" class="painel" aria-labelledby="titulo-cadastro">
+                <h2 id="titulo-cadastro">Cadastrar jogador</h2>
+                <p class="painel__descricao">Preencha os dados ou escolha um jogador real em "Elencos reais" para preencher automaticamente.</p>
+
+                <form id="form-jogador" class="formulario" novalidate>
+                    <div class="campo">
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" name="nome" maxlength="80" required>
+                        <small class="campo__erro" id="erro-nome"></small>
+                    </div>
+
+                    <div class="campo">
+                        <label for="clube">Clube</label>
+                        <input type="text" id="clube" name="clube" maxlength="60" placeholder="Ex.: Atlético-MG">
+                    </div>
+
+                    <div class="campo-grupo">
+                        <div class="campo">
+                            <label for="posicao">Posição *</label>
+                            <select id="posicao" name="posicao" required>
+                                <option value="">Selecione</option>
+                                <option value="Goleiro">Goleiro</option>
+                                <option value="Defensor">Defensor</option>
+                                <option value="Meio-campista">Meio-campista</option>
+                                <option value="Atacante">Atacante</option>
+                            </select>
+                            <small class="campo__erro" id="erro-posicao"></small>
+                        </div>
+
+                        <div class="campo">
+                            <label for="situacao">No meu time *</label>
+                            <select id="situacao" name="situacao" required>
+                                <option value="">Selecione</option>
+                                <option value="Titular">Titular</option>
+                                <option value="Reserva">Reserva</option>
+                                <option value="Observando">Observando</option>
+                            </select>
+                            <small class="campo__erro" id="erro-situacao"></small>
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <div class="campo">
+                            <label for="camisa">Camisa</label>
+                            <input type="number" id="camisa" name="camisa" min="1" max="99" placeholder="Ex.: 10">
+                            <small class="campo__erro" id="erro-camisa"></small>
+                        </div>
+
+                        <div class="campo">
+                            <label for="idade">Idade</label>
+                            <input type="number" id="idade" name="idade" min="15" max="50" placeholder="Ex.: 25">
+                            <small class="campo__erro" id="erro-idade"></small>
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <div class="campo">
+                            <label for="nacionalidade">Nacionalidade</label>
+                            <input type="text" id="nacionalidade" name="nacionalidade" maxlength="40" placeholder="Ex.: Brasil">
+                        </div>
+
+                        <div class="campo">
+                            <label for="nota">Minha nota (0 a 10)</label>
+                            <input type="number" id="nota" name="nota" min="0" max="10" step="0.5" placeholder="Ex.: 8.5">
+                            <small class="campo__erro" id="erro-nota"></small>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="imagem">URL do escudo do clube</label>
+                        <input type="url" id="imagem" name="imagem" placeholder="https://...">
+                    </div>
+
+                    <div class="campo">
+                        <label for="observacao">Observação</label>
+                        <textarea id="observacao" name="observacao" rows="3" maxlength="500" placeholder="Por que esse jogador está no seu time?"></textarea>
+                    </div>
+
+                    <div class="formulario__acoes">
+                        <button type="submit" id="btn-salvar" class="botao botao--primario">Cadastrar jogador</button>
+                        <button type="button" id="btn-cancelar" class="botao botao--secundario" hidden>Cancelar edição</button>
+                    </div>
+                </form>
+
+                <p id="mensagem" class="mensagem" role="status" aria-live="polite" title="Clique para fechar" hidden></p>
+            </section>
 
         </div>
 
