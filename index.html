@@ -165,6 +165,31 @@
                 <p id="status-api" class="status-api" aria-live="polite"></p>
                 <ul id="resultados-api" class="resultados-api"></ul>
             </section>
+
+            <section id="classificacao" class="painel" aria-labelledby="titulo-classificacao" hidden>
+                <h2 id="titulo-classificacao">Classificação</h2>
+                <p class="painel__descricao">Tabela da liga escolhida. Os times destacados têm jogadores no seu time.</p>
+
+                <div class="tabela-rolagem">
+                    <table class="tabela">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Time</th>
+                                <th scope="col" title="Pontos">P</th>
+                                <th scope="col" title="Jogos">J</th>
+                                <th scope="col" title="Vitórias">V</th>
+                                <th scope="col" title="Empates">E</th>
+                                <th scope="col" title="Derrotas">D</th>
+                                <th scope="col" title="Saldo de gols">SG</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-classificacao">
+                            <!-- Linhas geradas pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
 
         <!-- Coluna principal: escalação, estatísticas e listagem -->
