@@ -8,6 +8,9 @@ const CHAVE_STORAGE = "timedossonhos:jogadores";
 
 let jogadores = carregarJogadores();
 
+// Estado temporário: id do jogador que está sendo editado
+let idEmEdicao = null;
+
 // ---------- Elementos da página ----------
 
 const formulario = document.querySelector("#form-jogador");
@@ -163,6 +166,17 @@ function criarElemento(tag, classe, texto) {
     return elemento;
 }
 
+function criarBotao(texto, classe, acao, id) {
+
+    const botao = criarElemento("button", `botao botao--pequeno ${classe}`, texto);
+
+    botao.type = "button";
+    botao.dataset.acao = acao;
+    botao.dataset.id = id;
+
+    return botao;
+}
+
 function criarImagem(endereco, classe, textoAlternativo) {
 
     const imagem = criarElemento("img", classe);
@@ -309,6 +323,11 @@ function criarCard(jogador) {
     const nota = criarElemento("p", "card__nota", formatarNota(jogador.nota));
 
     corpo.append(etiqueta, nome, subtitulo, informacoes, nota);
+
+    const acoes = criarElemento("div", "card__acoes");
+    acoes.append(criarBotao("Editar", "botao--secundario", "editar", jogador.id));
+    acoes.append(criarBotao("Excluir", "botao--perigo", "excluir", jogador.id));
+    corpo.append(acoes);
 
     card.append(imagem, corpo);
 
