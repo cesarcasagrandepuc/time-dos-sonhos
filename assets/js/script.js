@@ -54,6 +54,8 @@ const seletorLiga = document.querySelector("#liga");
 const seletorTime = document.querySelector("#time-api");
 const statusApi = document.querySelector("#status-api");
 const listaResultadosApi = document.querySelector("#resultados-api");
+const campoPesquisaElenco = document.querySelector("#pesquisa-elenco");
+const seletorPosicaoElenco = document.querySelector("#posicao-elenco");
 
 const textoFormacao = document.querySelector("#formacao");
 const escalacaoVazia = document.querySelector("#escalacao-vazia");
@@ -1082,11 +1084,34 @@ function jaEstaNoTime(atleta) {
     return encontrado !== undefined;
 }
 
+// Aplica o filtro de nome e posição no elenco que veio da API
+function obterElencoFiltrado() {
+
+    const termo = campoPesquisaElenco.value.trim().toLowerCase();
+    const posicao = seletorPosicaoElenco.value;
+
+    return elencoApi.filter(atleta => {
+
+        const atendeNome = termo === "" || atleta.nome.toLowerCase().includes(termo);
+        const atendePosicao = posicao === "" || atleta.posicao === posicao;
+
+        return atendeNome && atendePosicao;
+    });
+}
+
 function renderizarElencoApi() {
 
     listaResultadosApi.textContent = "";
 
-    elencoApi.forEach(atleta => {
+    const elencoFiltrado = obterElencoFiltrado();
+
+    if (elencoApi.length > 0 && elencoFiltrado.length === 0) {
+        listaResultadosApi.append(
+            criarElemento("li", "status-api", "Nenhum jogador do elenco com esse filtro.")
+        );
+    }
+
+    elencoFiltrado.forEach(atleta => {
 
         const item = criarElemento("li", "resultado");
 
@@ -1315,6 +1340,8 @@ seletorTime.addEventListener("change", async () => {
     const idTime = seletorTime.value;
 
     elencoApi = [];
+    campoPesquisaElenco.value = "";
+    seletorPosicaoElenco.value = "";
     renderizarElencoApi();
 
     timeSelecionado = timesApi.find(time => time.id === idTime);
@@ -1340,6 +1367,14 @@ seletorTime.addEventListener("change", async () => {
     }
 
     renderizarElencoApi();
+});
+
+campoPesquisaElenco.addEventListener("input", renderizarElencoApi);
+seletorPosicaoElenco.addEventListener("change", renderizarElencoApi);
+
+// O formulário de filtro não deve recarregar a página
+document.querySelector("#form-filtro-elenco").addEventListener("submit", event => {
+    event.preventDefault();
 });
 
 listaResultadosApi.addEventListener("click", event => {

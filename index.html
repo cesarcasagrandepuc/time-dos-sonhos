@@ -144,6 +144,24 @@
                     </div>
                 </form>
 
+                <form id="form-filtro-elenco" class="filtro-elenco" role="search" aria-label="Filtrar elenco real">
+                    <div class="campo">
+                        <label for="pesquisa-elenco">Filtrar por nome</label>
+                        <input type="search" id="pesquisa-elenco" name="pesquisaElenco" placeholder="Ex.: Hulk">
+                    </div>
+
+                    <div class="campo">
+                        <label for="posicao-elenco">Posição</label>
+                        <select id="posicao-elenco" name="posicaoElenco">
+                            <option value="">Todas</option>
+                            <option value="Goleiro">Goleiro</option>
+                            <option value="Defensor">Defensor</option>
+                            <option value="Meio-campista">Meio-campista</option>
+                            <option value="Atacante">Atacante</option>
+                        </select>
+                    </div>
+                </form>
+
                 <p id="status-api" class="status-api" aria-live="polite"></p>
                 <ul id="resultados-api" class="resultados-api"></ul>
             </section>
