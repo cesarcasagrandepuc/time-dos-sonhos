@@ -387,6 +387,51 @@ textarea:focus-visible {
     background-color: rgba(242, 194, 48, 0.12);
 }
 
+/* ---------- Tabelas (classificação e comparação) ---------- */
+.tabela-rolagem {
+    overflow-x: auto;
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.tabela th,
+.tabela td {
+    padding: 0.45rem 0.4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela th {
+    color: var(--cor-texto-suave);
+    font-weight: 700;
+}
+
+.tabela tbody tr:hover {
+    background-color: var(--cor-superficie-2);
+}
+
+.tabela__time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.tabela__time img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.tabela__destaque {
+    background-color: rgba(47, 191, 113, 0.15);
+    font-weight: 700;
+}
+
 /* ---------- Formulários ---------- */
 .formulario {
     display: flex;

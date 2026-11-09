@@ -64,6 +64,9 @@ const campoFutebol = document.querySelector(".campo-futebol");
 const seletorFormacao = document.querySelector("#formacao-desejada");
 const statusFormacao = document.querySelector("#formacao-status");
 
+const secaoClassificacao = document.querySelector("#classificacao");
+const corpoClassificacao = document.querySelector("#tabela-classificacao");
+
 const MAXIMO_TITULARES = 11;
 
 const POSICOES = ["Goleiro", "Defensor", "Meio-campista", "Atacante"];
@@ -477,6 +480,11 @@ function renderizarJogadores() {
     renderizarEscalacao();
 
     renderizarEstatisticas();
+
+    // Atualiza o destaque dos clubes que têm jogadores no time
+    if (timesApi.length > 0) {
+        renderizarClassificacao();
+    }
 }
 
 /* =====================================================
@@ -1051,8 +1059,31 @@ function converterTime(entrada) {
     return {
         id: entrada.team.id,
         nome: entrada.team.displayName,
-        escudo
+        escudo,
+        posicao: valorEstatistica(entrada, "rank"),
+        pontos: valorEstatistica(entrada, "points"),
+        jogos: valorEstatistica(entrada, "gamesPlayed"),
+        vitorias: valorEstatistica(entrada, "wins"),
+        empates: valorEstatistica(entrada, "ties"),
+        derrotas: valorEstatistica(entrada, "losses"),
+        saldo: valorEstatistica(entrada, "pointDifferential")
     };
+}
+
+// Cada time da classificação tem uma lista "stats"; busca um valor pelo nome
+function valorEstatistica(entrada, nome) {
+
+    if (!entrada.stats) {
+        return 0;
+    }
+
+    const estatistica = entrada.stats.find(item => item.name === nome);
+
+    if (!estatistica) {
+        return 0;
+    }
+
+    return estatistica.value;
 }
 
 // Converte um atleta da API para o formato usado no sistema
@@ -1130,6 +1161,54 @@ function preencherSeletorTimes() {
 
         seletorTime.append(opcao);
     });
+}
+
+function renderizarClassificacao() {
+
+    corpoClassificacao.textContent = "";
+
+    // Clubes que têm pelo menos um jogador no meu time
+    const clubesDoTime = jogadores.map(jogador => jogador.clube);
+
+    // Cópia ordenada pela posição na tabela
+    const tabela = timesApi
+        .map(time => time)
+        .sort((a, b) => a.posicao - b.posicao);
+
+    tabela.forEach(time => {
+
+        const linha = criarElemento("tr");
+
+        if (clubesDoTime.includes(time.nome)) {
+            linha.className = "tabela__destaque";
+        }
+
+        const celulaTime = criarElemento("td");
+        const conteudoTime = criarElemento("div", "tabela__time");
+        conteudoTime.append(criarImagem(time.escudo, "", ""), criarElemento("span", "", time.nome));
+        celulaTime.append(conteudoTime);
+
+        let saldo = time.saldo;
+
+        if (time.saldo > 0) {
+            saldo = `+${time.saldo}`;
+        }
+
+        linha.append(
+            criarElemento("td", "", time.posicao),
+            celulaTime,
+            criarElemento("td", "", time.pontos),
+            criarElemento("td", "", time.jogos),
+            criarElemento("td", "", time.vitorias),
+            criarElemento("td", "", time.empates),
+            criarElemento("td", "", time.derrotas),
+            criarElemento("td", "", saldo)
+        );
+
+        corpoClassificacao.append(linha);
+    });
+
+    secaoClassificacao.hidden = false;
 }
 
 function jaEstaNoTime(atleta) {
@@ -1379,6 +1458,7 @@ seletorLiga.addEventListener("change", async () => {
     timeSelecionado = null;
     renderizarElencoApi();
     preencherSeletorTimes();
+    secaoClassificacao.hidden = true;
 
     if (liga === "") {
         statusApi.textContent = "";
@@ -1393,6 +1473,7 @@ seletorLiga.addEventListener("change", async () => {
         timesApi = await buscarTimes(liga);
 
         preencherSeletorTimes();
+        renderizarClassificacao();
 
         statusApi.textContent = `${timesApi.length} times carregados. Escolha um time.`;
 
