@@ -634,3 +634,76 @@ textarea::placeholder {
     margin: 0.2rem 0;
 }
 
+/* ==========================================================
+   Responsividade (Media Queries)
+   ========================================================== */
+
+/* Tablets e notebooks pequenos */
+@media (max-width: 960px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .filtros {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .campo--pesquisa {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+    .cabecalho__conteudo {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.75rem 1rem;
+    }
+
+    .menu {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .menu a {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    .layout {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .painel {
+        padding: 1rem;
+    }
+
+    .campo-grupo,
+    .filtros,
+    .busca-api {
+        grid-template-columns: 1fr;
+    }
+
+    .cards {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .detalhe {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+    }
+
+    .detalhe__imagem {
+        max-width: 180px;
+    }
+
+    .mensagem {
+        right: 1rem;
+        left: 1rem;
+        bottom: 1rem;
+    }
+}
