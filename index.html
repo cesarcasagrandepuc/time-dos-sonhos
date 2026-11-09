@@ -21,6 +21,7 @@
                 <ul class="menu">
                     <li><a href="#cadastro">Cadastrar</a></li>
                     <li><a href="#buscar-api">Elencos reais</a></li>
+                    <li><a href="#escalacao">Escalação</a></li>
                     <li><a href="#lista">Meu time</a></li>
                 </ul>
             </nav>
@@ -150,6 +151,25 @@
 
         <!-- Coluna principal: escalação, estatísticas e listagem -->
         <div class="layout__principal">
+            <div class="resumo-time">
+                <section id="escalacao" class="painel" aria-labelledby="titulo-escalacao">
+                    <div class="lista__topo">
+                        <h2 id="titulo-escalacao">Escalação</h2>
+                        <p id="formacao" class="contador"></p>
+                    </div>
+
+                    <!-- Os titulares são posicionados no campo pelo JavaScript -->
+                    <div class="campo-futebol">
+                        <div class="campo-futebol__linha" id="linha-atacante"></div>
+                        <div class="campo-futebol__linha" id="linha-meio-campista"></div>
+                        <div class="campo-futebol__linha" id="linha-defensor"></div>
+                        <div class="campo-futebol__linha" id="linha-goleiro"></div>
+                    </div>
+
+                    <p id="escalacao-vazia" class="painel__descricao" hidden>Nenhum titular ainda. Cadastre jogadores como "Titular" para eles aparecerem no campo.</p>
+                </section>
+            </div>
+
             <section id="lista" class="painel painel--lista" aria-labelledby="titulo-lista">
                 <div class="lista__topo">
                     <h2 id="titulo-lista">Meu time</h2>
