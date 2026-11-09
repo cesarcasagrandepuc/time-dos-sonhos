@@ -223,6 +223,33 @@
         </div>
     </main>
 
+    <!-- Detalhes de um jogador (aparece por cima da página) -->
+    <div id="modal-detalhes" class="modal">
+        <article class="detalhe" role="dialog" aria-modal="true" aria-labelledby="detalhe-nome">
+            <a href="#lista" class="modal__fechar" aria-label="Fechar detalhes">&times;</a>
+            <img class="detalhe__imagem" src="https://a.espncdn.com/i/teamlogos/soccer/500/86.png" alt="Escudo do Real Madrid">
+            <div class="detalhe__info">
+                <h2 id="detalhe-nome">Vinícius Júnior</h2>
+                <p class="detalhe__sub">Atacante · Real Madrid</p>
+                <dl class="detalhe__dados">
+                    <dt>No meu time</dt><dd>Titular</dd>
+                    <dt>Clube</dt><dd>Real Madrid</dd>
+                    <dt>Posição</dt><dd>Atacante</dd>
+                    <dt>Camisa</dt><dd>7</dd>
+                    <dt>Idade</dt><dd>26</dd>
+                    <dt>Nacionalidade</dt><dd>Brasil</dd>
+                    <dt>Minha nota</dt><dd>★ 9.5 / 10</dd>
+                </dl>
+                <h3>Observação</h3>
+                <p>Velocidade e drible pela esquerda.</p>
+                <div class="detalhe__acoes">
+                    <button type="button" class="botao botao--primario">Editar</button>
+                    <button type="button" class="botao botao--perigo">Excluir</button>
+                </div>
+            </div>
+        </article>
+    </div>
+
     <footer class="rodape">
         <p>Meu Time dos Sonhos &middot; Trabalho Prático de DIW &middot; PUC Minas &middot; César Casagrande Lopes</p>
         <p>Elencos reais obtidos da API pública da ESPN.</p>
