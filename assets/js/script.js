@@ -67,6 +67,9 @@ const statusFormacao = document.querySelector("#formacao-status");
 const secaoClassificacao = document.querySelector("#classificacao");
 const corpoClassificacao = document.querySelector("#tabela-classificacao");
 
+const blocoProximosJogos = document.querySelector("#proximos-jogos");
+const listaJogos = document.querySelector("#lista-jogos");
+
 const MAXIMO_TITULARES = 11;
 
 const POSICOES = ["Goleiro", "Defensor", "Meio-campista", "Atacante"];
@@ -1211,6 +1214,97 @@ function renderizarClassificacao() {
     secaoClassificacao.hidden = false;
 }
 
+// 3ª requisição: próximos jogos do time escolhido
+async function buscarProximosJogos(liga, idTime) {
+
+    const resposta = await fetch(
+        `${URL_API}/site/v2/sports/soccer/${liga}/teams/${idTime}/schedule?fixture=true`
+    );
+
+    const dados = await resposta.json();
+
+    if (!dados.events) {
+        return [];
+    }
+
+    return dados.events.map(evento => converterJogo(evento));
+}
+
+function converterJogo(evento) {
+
+    const partida = evento.competitions[0];
+
+    let mandante = "";
+    let visitante = "";
+
+    partida.competitors.forEach(time => {
+        if (time.homeAway === "home") {
+            mandante = time.team.displayName;
+        } else {
+            visitante = time.team.displayName;
+        }
+    });
+
+    let estadio = "";
+
+    if (partida.venue) {
+        estadio = partida.venue.fullName;
+    }
+
+    return {
+        data: new Date(evento.date),
+        mandante,
+        visitante,
+        estadio
+    };
+}
+
+// Ex.: "sáb., 14/11 · 18:30"
+function formatarDataJogo(data) {
+
+    const dia = data.toLocaleDateString("pt-BR", {
+        weekday: "short",
+        day: "2-digit",
+        month: "2-digit"
+    });
+
+    const hora = data.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    return `${dia} · ${hora}`;
+}
+
+function renderizarProximosJogos(jogos) {
+
+    listaJogos.textContent = "";
+
+    if (jogos.length === 0) {
+        listaJogos.append(criarElemento("li", "jogo", "Nenhum jogo marcado no momento."));
+    }
+
+    // Mostra no máximo os 3 próximos jogos
+    jogos.forEach((jogo, indice) => {
+
+        if (indice >= 3) {
+            return;
+        }
+
+        const item = criarElemento("li", "jogo");
+
+        item.append(
+            criarElemento("span", "jogo__data", formatarDataJogo(jogo.data)),
+            criarElemento("span", "jogo__times", `${jogo.mandante} x ${jogo.visitante}`),
+            criarElemento("span", "jogo__data", jogo.estadio)
+        );
+
+        listaJogos.append(item);
+    });
+
+    blocoProximosJogos.hidden = false;
+}
+
 function jaEstaNoTime(atleta) {
 
     const encontrado = jogadores.find(jogador =>
@@ -1459,6 +1553,7 @@ seletorLiga.addEventListener("change", async () => {
     renderizarElencoApi();
     preencherSeletorTimes();
     secaoClassificacao.hidden = true;
+    blocoProximosJogos.hidden = true;
 
     if (liga === "") {
         statusApi.textContent = "";
@@ -1494,6 +1589,7 @@ seletorTime.addEventListener("change", async () => {
     campoPesquisaElenco.value = "";
     seletorPosicaoElenco.value = "";
     renderizarElencoApi();
+    blocoProximosJogos.hidden = true;
 
     timeSelecionado = timesApi.find(time => time.id === idTime);
 
@@ -1518,6 +1614,14 @@ seletorTime.addEventListener("change", async () => {
     }
 
     renderizarElencoApi();
+
+    // Os próximos jogos têm o próprio try/catch: se falharem, o elenco continua na tela
+    try {
+        const jogos = await buscarProximosJogos(seletorLiga.value, idTime);
+        renderizarProximosJogos(jogos);
+    } catch (erro) {
+        console.error(erro);
+    }
 });
 
 campoPesquisaElenco.addEventListener("input", renderizarElencoApi);
