@@ -519,6 +519,13 @@ textarea::placeholder {
 }
 
 /* ---------- Busca na API ---------- */
+.filtro-elenco {
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
 .busca-api {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -869,6 +876,10 @@ textarea::placeholder {
     .campo-grupo,
     .filtros,
     .busca-api {
+        grid-template-columns: 1fr;
+    }
+
+    .filtro-elenco {
         grid-template-columns: 1fr;
     }
 
