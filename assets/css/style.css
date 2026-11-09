@@ -1,0 +1,191 @@
+/* ==========================================================
+   Meu Time dos Sonhos — folha de estilos
+   ========================================================== */
+
+/* ---------- Identidade visual (variáveis) ---------- */
+:root {
+    --cor-fundo: #0c1410;
+    --cor-superficie: #14211a;
+    --cor-superficie-2: #1c2d24;
+    --cor-borda: #2f4a3c;
+    --cor-texto: #f1f7f3;
+    --cor-texto-suave: #a9c2b4;
+    --cor-primaria: #2fbf71;
+    --cor-primaria-hover: #4fd98c;
+    --cor-texto-botao: #06170d;
+    --cor-destaque: #f2c230;
+    --cor-sucesso: #4fd98c;
+    --cor-erro: #ff6b6b;
+    --cor-foco: #f2c230;
+
+    --raio: 0.75rem;
+    --raio-pequeno: 0.4rem;
+    --sombra: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.45);
+    --fonte: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Reset básico e Box Model ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--fonte);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+h1, h2, h3 {
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1rem; color: var(--cor-texto-suave); margin-top: 1rem; }
+
+a {
+    color: var(--cor-destaque);
+}
+
+a:hover {
+    color: var(--cor-texto);
+}
+
+/* Foco visível para navegação por teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--cor-foco);
+    outline-offset: 2px;
+}
+
+.visualmente-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------- Cabeçalho e navegação (Flexbox) ---------- */
+.cabecalho {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--cor-superficie);
+    border-bottom: 4px solid var(--cor-primaria);
+}
+
+.cabecalho__conteudo {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.titulo-sistema {
+    margin: 0;
+    font-size: inherit;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--cor-texto);
+    text-decoration: none;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.menu a {
+    display: block;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--raio-pequeno);
+    color: var(--cor-texto-suave);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu a:hover {
+    background-color: var(--cor-superficie-2);
+    color: var(--cor-texto);
+}
+
+/* ---------- Layout principal (CSS Grid) ---------- */
+.layout {
+    flex: 1;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.layout__lateral,
+.layout__principal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.painel {
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 1.25rem;
+    box-shadow: var(--sombra);
+    scroll-margin-top: 5rem;
+}
+
+.painel__descricao {
+    margin: 0 0 1rem;
+    color: var(--cor-texto-suave);
+    font-size: 0.9rem;
+}
+
+/* ---------- Rodapé ---------- */
+.rodape {
+    padding: 1.25rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+    background-color: var(--cor-superficie);
+    border-top: 1px solid var(--cor-borda);
+}
+
+.rodape p {
+    margin: 0.2rem 0;
+}
+
